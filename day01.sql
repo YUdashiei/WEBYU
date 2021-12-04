@@ -1,2 +1,4 @@
 show databases
-use yz；
+use yz;
+show tablel;
+var ;
