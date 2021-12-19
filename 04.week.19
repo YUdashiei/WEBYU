@@ -1,0 +1,39 @@
+练习：计算1~100之间所有整数的和，变量声明使用let
+let arr=0; //let 声明变量即使在全局作用域下声明它也局部变量
+for(let i=1;i<=100;i++){
+   arr+=i;
+}
+console.log(arr);
+
+练习：使用箭头函数创建函数getAvg，传递任意两个数字，返回平均值
+  var getAvg=((a,b)=>(a+b)/2);
+//console.log(getAvg(3,9));
+
+练习：编写脚本文件03_global.js，声明变量，创建函数，检测是否为全局
+var a=1;
+function fn(){
+  return 2;
+}
+//不是全局作用域
+console.log( global.a );
+console.log( global.fn() );
+  
+练习：使用for、while、do-while各循环100000次，查看耗时
+  console.time('tao');
+for(var i=1;i<=100000;i++){
+}
+console.timeEnd('tao');
+
+console.time('奔');
+var i=1;
+do{
+//    console.time('奔'); 
+	i++;
+}while(i<=100000);
+console.timeEnd('奔');
+
+console.time('会');
+while(i<=100000){
+  i++;
+}
+console.timeEnd('会');
