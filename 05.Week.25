@@ -1,0 +1,166 @@
+一
+一：模块系统
+__dirname当前模块绝对路径
+__filename绝对路径加模块
+1.模块分类：自定义模块，核心模块，第三方模块
+2.包（package）和npm：npm：用于管理包的工具 CommonJS：模块化规范
+3.npm命令：npm init -y/npm install 包名称/npm install
+二：查询字符串模块（querystring）
+1.查询字符串是客户端向服务器传递参数的一种方式
+参数名 1=参数值1&参数明名2=参数值2
+parse（）将查询字符串转为对象，获取参数值
+三.URL模块
+1.URL：统一资源定位（网址）
+www.codeboy.com:9999/1.html?lid=…
+协议   域名/IP地址     端口  资源的路径  查询字符串  锚点链接
+new URL(网址)    将一个网址转为对象，为了获取各个部分
+四.定时器
+1.一次性定时器setTimeout，周期性定时器setInterval，立即执行定时器setlmmediate
+
+二
+一.立即执行定时器setlmmediate
+二.同步和异步
+同步：在主程序中执行，会阻止后续代码的执行，通过返回值获取结果
+异步：在一个独立的线程执行，不会阻止主程序后续代码执行，通过回调函数获取结果
+三.文件系统模块（fs）
+文件形式和目录形式
+1.查看文件状态：statSync(文件的路径)/stat(文件的路径, 回调函数)注：后面要用到回调函数的就是异步编程
+isFile()查看是否为文件/isDirectory()  查看是否为目录
+2.创建目录：mkdirSync(目录的路径) / mkdir(目录的路径, 回调函数)
+ 3.移除目录：rmdirSync(目录的路径) / rmdir(目录的路径, 回调函数)不允许移除有文件的目录
+ 4.读取目录：readdirSync(目录的路径)/readdir(目录的路径, 回调函数)
+5.清空写入文件：writeFileSync(文件的路径, 写入的数据) / writeFile(文件的路径, 写入的数据, 回调函数)
+如果文件不存在，先创建文件然后写入数据
+如果文件已经存在，先清空文件内容然后写入数据
+ 6.追加写入：appendFileSync(文件的路径, 写入的数据) / appendFile(文件的路径, 写入的数据, 回调函数)如果文件不存在，先创建文件然后写入数据。如果文件已经存在，会在文件的末尾追加写入数据
+ 7.读取文件：readFileSync(文件的路径)/readFile(文件的路径, 回调函数)读取的文件格式为Buffer
+ 8.删除文件：unlinkSync(文件的路径)/unlink(文件的路径, 回调函数)
+四.流(stream)
+  文件流：将一个文件分成多段
+  1.createReadStream()   将一个文件按照流的方式读取，会分成多段createWriteStream()   创建可写入的流，可以分段写入,
+pipe()管道，可以将读取的流添加到写入的流，on(事件名称, 回调函数)当监听的某个事件，自动执行回调函数，事件名称是固定形式的字符串
+五.http协议
+ 超文本传输协议，是客户端浏览器和WEB服务器之间的通信协议
+ 1.通用头信息
+   Request URL：请求的URL，要请求的服务器上的资源
+   Request Method：请求的方法，对以上资源的操作方式(增删改查)
+   Status Code：响应的状态码
+      1**：接收到了请求，还没结束
+      2**：成功的响应
+      3**：响应的重定向，发生跳转       
+      4**：客户端错误
+      5**：服务器端错误
+ 2.响应头信息(response)
+  Location：要跳转的URL
+  Content-Type：响应的内容类型， 解决中文乱码
+             text/html; charset=utf-8
+ 3.请求头信息(request)
+六.http模块
+ 可以用来创建WEB服务器，为客户端提供资源(数据、html、css..)
+ createServer()   创建WEB服务器
+ listen()   设置端口
+ 通过事件接收请求，做出响应
+ on('request', (req,res)=>{   
+    res 响应的对象
+    res.setHeader()  设置响应的头信息
+    res.write()  设置响应的内容
+    res.end()  结束并发送响应
+ })
+
+三
+一.http模块
+ req 请求的对象
+ req.url   获取请求的URL 
+ req.method   获取请求的方法
+ res  响应的对象
+ res.setHeader()  设置响应的头信息
+ res.write()  设置响应的内容
+ res.statusCode   设置响应的状态码
+ res.end()   结束并发送响应
+二.express框架
+ 基于Node.js平台，快速、开放、极简的WEB开发框架
+1.路由
+用来处理特定的请求，路由包含三部分：请求的URL、请求的方法、回调函数
+  res  响应的对象
+   res.send()   设置响应的内容并发送
+   res.redirect()   设置响应的重定向并发送
+   res.sendFile()   设置响应的文件并发送，需要使用绝对路径__ dirname
+  req  请求的对象
+   req.url   获取请求的URL
+   req.method  获取请求的方法
+   req.query   获取get传递的参数
+2.传参
+传参方式                 格式                           路由中获取
+get传递http://127.0.0.1:8080/mysearch?keyword=笔记本 req.query{keyword:'笔记本'}
+路由传参http://127.0.0.1:8080/package/express req.params{pname:express}
+
+四
+post传递以流的形式，URL不可见传递大的文件（数据）
+通过事件获取req.on('data', (c)=>{   c获取的参数，格式为buffer   c.toString()   转为字符串   user=tao&pwd=123456 需要转为对象})
+一.路由器
+路由器是用来管理路由，最终路由器被WEB服务器使用，每个路由器是一个自定义模块
+路由器
+//引入express
+const r=express.Router();//创建路由器对象
+//往路由器添加路由module.exports=r; //暴露(导出)路由器对象
+WEB服务器
+//使用路由器，添加前缀
+app.use( 添加的前缀, 引入的路由器 )
+二.中间件
+ 拦截对WEB服务器的请求，分为应用级中间件、路由级中间件、内置中间件、第三方中间件、错误处理中间件（后面两个不重要）
+1.应用级中间件：也称为自定义中间件，一旦拦截到请求，自动调用函数
+function  fn(req,res,next){  
+next()  //往后执行下一个中间件或者路由}
+app.use( 要拦截的URL, fn )
+2.路由级中间件;路由器的使用
+  app.use(要拦截的URL, 路由器)
+ 3.内置中间件
+  静态资源：包括html，css，js，图形，视频，声音...
+托管静态资源：客户端请求静态资源，不需要通过路由响应，而是自动查找资源
+  app.use( express.static(托管的目录) )
+4.将post传递的参数转为对象
+app.use( express.urlencoded({  
+extended: false 
+//是否使用扩展的qs转为对象  true->使用  false->不适用
+}) );
+路由获取
+req.body
+
+五
+一.mysql模块
+ 专门用于操作mysql数据库的模块
+  createConnection()   创建连接对象,createPool()   创建连接池对象
+  query(SQL命令, [要过滤的值] , 回调函数)   执行SQL命令，通过回调函数获取结果
+  select * from emp where "1";
+  SQL注入：往SQL命令加入新的命令，会破坏已有SQL命令
+占位：? []
+二.接口
+ 后端为前端提供的动态资源
+ RESTful接口，REST: 表述性状态转移，它是分布式超媒体的架构风格
+1.接口地址
+    http://127.0.0.1:8080/v1/emps
+                    版本号  资源名称(复数形式)
+    http://127.0.0.1:8080/v1/emps/3
+                               单个资源(路由传参)  
+    http://127.0.0.1:8080/v1/users/login
+                                 对资源的特殊的操作
+2.请求方法
+   对资源的操作的方式，分为增删改查
+   get    获取资源
+   post   新建资源(插入数据)
+   put    修改资源
+   delete  删除资源
+新建资源和修改资源，都使用post传参
+ 3.过滤数据
+  分页过滤
+  http://127.0.0.1:8080/v1/emps?pno=2
+                               传递页码过滤
+  http://127.0.0.1:8080/v1/emps?s1=8000&s2=10000
+                               传递工资过滤
+  使用get传递过滤数据
+ 4.返回格式    
+  格式为json，是一种字符串对象，里边通常是数组或者对象，包含状态码、消息、数据
+  {"code":200,"msg":"登录成功" }
+  {"code":200,"msg":"查找成功","data": 数据}
+ ApiPost：接口测试工具
+ www.apipost.cn
