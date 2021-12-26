@@ -1,0 +1,73 @@
+一:练习：使用周期性定时器，每隔3秒钟打印‘滴滴滴’，打印3次后清除定时器
+声明变量用于计数
+var count=0;
+var timer=setInterval(()=>{
+  console.log('滴滴滴');
+  //打印一次，数量加1
+  count++;
+  //当数量为3的时候，清除定时器
+  if(count===3){
+    clearInterval(timer);
+  }
+},1000);
+
+二：练习：创建WEB服务器并设置端口，添加事件，响应1.html文件（先用同步方法读取文件内容，然后把读取的文件作为响应的内容）
+ const http=require('http');
+const fs=require('fs');
+//创建WEB服务器
+const app=http.createServer();
+//设置端口
+app.listen(8080,()=>{
+  console.log('服务器启动成功');
+});
+//接收请求
+//通过事件监听请求
+app.on('request',(req,res)=>{
+  //req请求的对象
+  //获取请求的URL，请求的方法
+  console.log(req.url, req.method);
+  /*
+  //读取1.html文件
+  var buf=fs.readFileSync('./1.html');
+  //设置响应的内容类型
+  //res.setHeader('Content-Type','text/html;charset=utf-8');
+  //把读取的文件作为响应的内容
+  res.write(buf);
+  //结束并发送
+  res.end();
+  
+三：练习：使用express创建WEB服务器设置端口，添加路由(get /reg)响应注册文件reg.html，点击提交（get  /myreg），响应‘注册成功，欢迎：xxx’
+//引入express模块
+const express=require('express');
+//引入查询字符串模块
+const querystring=require('querystring');
+//创建WEB服务器                        
+const app=express();
+//设置端口
+app.listen(8080);
+//路由(get /reg) 响应文件reg.html
+app.get('/reg',(req,res)=>{
+  res.sendFile(__dirname+'/reg.html');
+});
+//路由(get /myreg)  接收表单提交的请求
+app.get('/myreg',(req,res)=>{
+  //获取get传递的参数
+  console.log(req.query);
+  res.send('注册成功！欢迎：'+req.query.user);
+});
+
+四：练习：创建web服务器，托管静态资源到public目录，包含文件add.html，点击提交(post  /add)，获取post传递的参数，响应‘添加成功，员工姓名：xx’
+const express=require('express');
+const app=express();
+app.listen(8080);
+//托管静态资源到public目录
+app.use( express.static('./public') );
+//将post传递的参数转换为对象
+app.use( express.urlencoded({
+  extended:false
+}) );
+//路由(post /add)
+app.post('/add',(req,res)=>{
+  console.log(req.body);
+  res.send('员工添加成功！ 姓名：'+req.body.ename);
+});
